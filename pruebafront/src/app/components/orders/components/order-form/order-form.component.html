@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <h2>Crear Orden</h2>
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="idPatient" class="form-label">Paciente</label>
+      <select id="idPatient" class="form-control" formControlName="idPatient">
+        <option value="">Seleccione un paciente</option>
+        <option *ngFor="let patient of patients" [value]="patient.idPatient">
+          {{ patient.name }} {{ patient.lastName }} ({{ patient.identificationNumber }})
+        </option>
+      </select>
+      <div *ngIf="submitted && fc.idPatient.errors" class="text-danger small">
+        El paciente es requerido
+      </div>
+      <div *ngIf="errorPatients" class="text-danger small">{{ errorPatients }}</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="dateCare" class="form-label">Fecha</label>
+      <input id="dateCare" type="date" class="form-control" formControlName="dateCare">
+      <div *ngIf="submitted && fc.dateCare.errors" class="text-danger small">
+        <div *ngIf="fc.dateCare.errors.required">La fecha es requerida</div>
+        <div *ngIf="fc.dateCare.errors.futureDate">La fecha no puede ser futura</div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="exams" class="form-label">Exámenes</label>
+      <select id="exams" class="form-control" formControlName="exams" multiple>
+        <option *ngFor="let exam of exams" [value]="exam.idExam">
+          {{ exam.examName }}
+        </option>
+      </select>
+      <div *ngIf="submitted && fc.exams.errors" class="text-danger small">
+        Debes seleccionar al menos un examen
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar Orden</button>
+  </form>
+</div>

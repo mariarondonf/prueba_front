@@ -1,0 +1,39 @@
+<div class="container mt-4">
+    <h2>Lista de Órdenes</h2>
+
+    <div *ngIf="loading">Cargando órdenes...</div>
+    <div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <table class="table table-striped" *ngIf="!loading && pagedOrders.length > 0">
+        <thead>
+            <tr>
+                <th># Orden</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of pagedOrders">
+                <td>{{ order.orderNumber }}</td>
+                <td>{{ order.idPatient }}</td>
+                <td>{{ order.dateCare | date: 'shortDate'}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <nav *ngIf="totalPages > 1">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="setPage(currentPage - 1)">Anterior</a>
+            </li>
+            <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+                <a class="page-link" (click)="setPage(page)">{{ page }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="setPage(currentPage + 1)">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div *ngIf="!loading && pagedOrders.length === 0">No hay órdenes disponibles.</div>
+</div>
